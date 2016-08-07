@@ -1,7 +1,11 @@
 name: GoogleAnalytics
-main:  com.haniokasai.nukkit.GoogleAnalytics.Main
+main:  com.haniokasai.nukkit.GoogleAnalytics.GoogleAnalyticsPlugin
 version: 0.0.1
 author: haniokasai
 api: ["1.0.0"]
 description: GoogleAnalytics for nukkit
 website: http://haniokasai.com
+permissions:
+     googleanalyticsplugin.ignore:
+         description: Ignores all actions of this player
+         default: false

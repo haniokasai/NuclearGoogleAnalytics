@@ -1,0 +1,7 @@
+name: GoogleAnalytics
+main:  com.haniokasai.nukkit.GoogleAnalytics.Main
+version: 0.0.1
+author: haniokasai
+api: ["1.0.0"]
+description: GoogleAnalytics for nukkit
+website: http://haniokasai.com

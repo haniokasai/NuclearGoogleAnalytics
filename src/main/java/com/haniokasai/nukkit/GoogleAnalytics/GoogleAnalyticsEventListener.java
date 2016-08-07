@@ -97,7 +97,7 @@ public class GoogleAnalyticsEventListener implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerJoin(PlayerJoinEvent event){
 		if(enableEventLogin) {
-			try {
+			//try {
 				Player player = event.getPlayer();
 
 				if(!player.hasPermission("googleanalyticsplugin.ignore")) {
@@ -105,10 +105,9 @@ public class GoogleAnalyticsEventListener implements Listener {
 
 					plugin.getTracker().Track(getClientName(plugin, player), getClientId(player), getClientIP(player.getAddress()), player.getName(), "Login", player.isOp() ? "Operator" : "Player");
 				}
-			}
-			catch(Exception e) {
+		/*}catch(Exception e) {
 				plugin.getLogger().warning("Event Listener Error: " + e.getMessage());
-			}
+			}*/
 		}
 	}
 
@@ -260,7 +259,7 @@ public class GoogleAnalyticsEventListener implements Listener {
 	private static String getClientName(GoogleAnalyticsPlugin plugin, Player player) {
 
 	    String serverVersion = plugin.getServer().getVersion();
-	    String clientVersion = serverVersion.substring(0, serverVersion.indexOf('-'));
+	    String clientVersion = serverVersion;
 	    String clientName = "Minecraft";
 
 	    // Check for other clients here...
@@ -323,7 +322,7 @@ public class GoogleAnalyticsEventListener implements Listener {
 	}
 
 	public static String getClientIP(String string) {
-		return string != null ? string.toString().substring(1) : "0.0.0.0";
+		return string != null ? string.toString() : "0.0.0.0";
 	}
 
 	public static String getClientId(Player player) {

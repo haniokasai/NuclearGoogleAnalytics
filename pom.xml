@@ -24,11 +24,6 @@
 		<version>1.0-SNAPSHOT</version>
 		<scope>provided</scope>
     </dependency>
-<dependency>
-    <groupId>org.toile-libre.libe</groupId>
-    <artifactId>curl</artifactId>
-    <version>0.0.1</version>
-</dependency>
   </dependencies>
 
  <build>

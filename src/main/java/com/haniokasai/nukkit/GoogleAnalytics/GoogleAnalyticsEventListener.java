@@ -48,13 +48,9 @@ public class GoogleAnalyticsEventListener implements Listener {
 	private final boolean enableEventTryLogin;
 	private final boolean enableEventLogin;
 	private final boolean enableEventQuit;
-	private final boolean enableEventEnter;
 	private final boolean enableEventRespawn;
 	private final boolean enableEventKicked;
-	private final boolean enableEventEnchantItem;
-	private final boolean enableEventTame;
 	private final boolean enableEventGameModeChange;
-	private final boolean enableEventLevelUp;
 
 	private final HashMap<String, Long> playerJoinedTime = new HashMap<String, Long>();
 
@@ -68,13 +64,9 @@ public class GoogleAnalyticsEventListener implements Listener {
 	    enableEventTryLogin = plugin.getConfig().getBoolean("track_events.trylogin", true);
 	    enableEventLogin = plugin.getConfig().getBoolean("track_events.login", true);
 	    enableEventQuit = plugin.getConfig().getBoolean("track_events.quit", true);
-	    enableEventEnter = plugin.getConfig().getBoolean("track_events.enter", true);
 	    enableEventRespawn = plugin.getConfig().getBoolean("track_events.respawn", true);
 	    enableEventKicked = plugin.getConfig().getBoolean("track_events.kicked", true);
-	    enableEventEnchantItem = plugin.getConfig().getBoolean("track_events.enchantitem", true);
-	    enableEventTame = plugin.getConfig().getBoolean("track_events.tame", true);
 	    enableEventGameModeChange = plugin.getConfig().getBoolean("track_events.gamemodechange", true);
-	    enableEventLevelUp = plugin.getConfig().getBoolean("track_events.levelup", true);
 	}
 
 
@@ -97,7 +89,7 @@ public class GoogleAnalyticsEventListener implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerJoin(PlayerJoinEvent event){
 		if(enableEventLogin) {
-			//try {
+			try {
 				Player player = event.getPlayer();
 
 				if(!player.hasPermission("googleanalyticsplugin.ignore")) {
@@ -105,9 +97,9 @@ public class GoogleAnalyticsEventListener implements Listener {
 
 					plugin.getTracker().Track(getClientName(plugin, player), getClientId(player), getClientIP(player.getAddress()), player.getName(), "Login", player.isOp() ? "Operator" : "Player");
 				}
-		/*}catch(Exception e) {
+		}catch(Exception e) {
 				plugin.getLogger().warning("Event Listener Error: " + e.getMessage());
-			}*/
+			}
 		}
 	}
 

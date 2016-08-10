@@ -86,15 +86,11 @@ public class GoogleAnalyticsPlugin extends PluginBase implements Listener{
 			this.getConfig().set("track_events.login", true);
 			this.getConfig().set("track_events.trylogin", true);
 			this.getConfig().set("track_events.quit", true);
-			this.getConfig().set("track_events.enter", true);
 			this.getConfig().set("track_events.respawn", true);
 			this.getConfig().set("track_events.kicked", true);
 			this.getConfig().set("track_events.death", true);
 			this.getConfig().set("track_events.kill", true);
-			this.getConfig().set("track_events.enchantitem", true);
-			this.getConfig().set("track_events.tame", true);
 			this.getConfig().set("track_events.gamemodechange", true);
-			this.getConfig().set("track_events.levelup", true);
 
 			this.getConfig().set("analytics.server_domain", "");
 			this.getConfig().set("analytics.server_account", "MO-XXXXXXXX-X");

@@ -30,12 +30,12 @@ import cn.nukkit.plugin.PluginManager;
  */
 public class GoogleAnalyticsPlugin extends PluginBase implements Listener{
 
-	private String analyticsServerDomain; // The domain of the google analytics account
-	private String analyticsServerAccount; // The tracking account id
+	public static String analyticsServerDomain; // The domain of the google analytics account
+	public static String analyticsServerAccount; // The tracking account id
 
-	private boolean enableDebug = false;
+	public static boolean enableDebug = false;
 
-	private Tracker tracker = null;
+	public Tracker tracker = null;
 
 
 	@Override
@@ -58,9 +58,6 @@ public class GoogleAnalyticsPlugin extends PluginBase implements Listener{
 
 			return;
 		}
-
-		// Tracker
-		tracker = new Tracker(this, analyticsServerDomain, analyticsServerAccount, enableDebug);
 
 		// Events
 		pm.registerEvents(new GoogleAnalyticsEventListener(this), this);

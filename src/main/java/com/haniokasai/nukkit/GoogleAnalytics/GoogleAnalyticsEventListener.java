@@ -25,7 +25,6 @@ import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.EventPriority;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
-import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.EntityDeathEvent;
 import cn.nukkit.event.player.PlayerGameModeChangeEvent;
 import cn.nukkit.event.player.PlayerJoinEvent;
@@ -77,7 +76,7 @@ public class GoogleAnalyticsEventListener implements Listener {
 				Player player = event.getPlayer();
 
 				if(!player.hasPermission("googleanalyticsplugin.ignore")) {
-					plugin.getTracker().Track(getClientName(plugin, player), getClientId(player), getClientIP(player.getAddress()), player.getName(), "TryLogin", player.isWhitelisted() ? "Whitelisted" : "Not whitelisted");
+					plugin.getTracker().Track(player.getName(),player.getAddress(), player.getName(), "Action","Login");
 				}
 			}
 			catch(Exception e) {
@@ -95,7 +94,7 @@ public class GoogleAnalyticsEventListener implements Listener {
 				if(!player.hasPermission("googleanalyticsplugin.ignore")) {
 					playerJoinedTime.put(player.getName(), System.currentTimeMillis());
 
-					plugin.getTracker().Track(getClientName(plugin, player), getClientId(player), getClientIP(player.getAddress()), player.getName(), "Login", player.isOp() ? "Operator" : "Player");
+					plugin.getTracker().Track(player.getName(),player.getAddress(), player.getName(), "Login", player.isOp() ? "Operator" : "Player");
 				}
 		}catch(Exception e) {
 				plugin.getLogger().warning("Event Listener Error: " + e.getMessage());
@@ -139,7 +138,8 @@ public class GoogleAnalyticsEventListener implements Listener {
 						}
 					}
 
-					plugin.getTracker().Track(getClientName(plugin, player), getClientId(player), getClientIP(player.getAddress()), player.getName(), "Quit", playTime);
+					plugin.getTracker().Track(player.getName(),player.getAddress(), player.getName(),  "Quit", playTime);
+					plugin.getTracker().Track(player.getName(),player.getAddress(), player.getName(), "Action","Quit");
 				}
 			}
 			catch(Exception e) {
@@ -156,7 +156,7 @@ public class GoogleAnalyticsEventListener implements Listener {
 				Player player = event.getPlayer();
 
 				if(!player.hasPermission("googleanalyticsplugin.ignore")) {
-					plugin.getTracker().TrackAction(getClientName(plugin, player), getClientId(player), getClientIP(player.getAddress()), player.getName(), "Respawn", "At spawn");
+					plugin.getTracker().Track(player.getName(),player.getAddress(), player.getName(), "Action","Respawn");
 				}
 			}
 			catch(Exception e) {
@@ -172,7 +172,7 @@ public class GoogleAnalyticsEventListener implements Listener {
 				Player player = event.getPlayer();
 
 				if(!player.hasPermission("googleanalyticsplugin.ignore")) {
-					plugin.getTracker().TrackAction(getClientName(plugin, player), getClientId(player), getClientIP(player.getAddress()), player.getName(), "Kicked", event.getReason());
+					plugin.getTracker().Track(player.getName(),player.getAddress(), player.getName(), "Action","Kicked");
 				}
 			}
 			catch(Exception e) {
@@ -191,7 +191,7 @@ public class GoogleAnalyticsEventListener implements Listener {
 				player = (Player)entity;
 
 				if(!player.hasPermission("googleanalyticsplugin.ignore")) {
-					plugin.getTracker().TrackAction(getClientName(plugin, player), getClientId(player), getClientIP(player.getAddress()), player.getName(), "Died", entity.getLastDamageCause() != null ? getDamageName(entity.getLastDamageCause().getCause()) : "Unkown");
+					plugin.getTracker().Track(player.getName(),player.getAddress(), player.getName(), "Action","Died");
 				}
 			}
 			catch(Exception e) {
@@ -205,7 +205,7 @@ public class GoogleAnalyticsEventListener implements Listener {
 			if(killer instanceof Player){
 
 				if(player != null && !player.hasPermission("googleanalyticsplugin.ignore") && enableEventKill) {
-					plugin.getTracker().TrackAction(getClientName(plugin, player), getClientId(player), getClientIP(player.getAddress()), player.getName(), "Kill", getEntityName(entity));
+					plugin.getTracker().Track(player.getName(),player.getAddress(), player.getName(), "Action", "Kill");
 				}
 			}
 
@@ -221,7 +221,7 @@ public class GoogleAnalyticsEventListener implements Listener {
 				Player player = (Player) event.getPlayer();
 
 				if(!player.hasPermission("googleanalyticsplugin.ignore")) {
-					plugin.getTracker().TrackAction(getClientName(plugin, player), getClientId(player), getClientIP(player.getAddress()), player.getName(), "Game Mode Change", "Game Mode " + getGamemode(event.getNewGamemode()));
+					plugin.getTracker().Track(player.getName(),player.getAddress(), player.getName(), "Action", "ChangeGameMode");
 				}
 			}
 			catch(Exception e) {
@@ -230,94 +230,4 @@ public class GoogleAnalyticsEventListener implements Listener {
 		}
 	}
 
-
-	private static String getEntityName(Entity entity) {
-		String victimName = "";
-
-		if(entity instanceof Player) {
-			Player victim = (Player)entity;
-
-			victimName = victim.getName();
-		}
-		else {
-			String className = entity.getClass().getName();
-
-			victimName = className.substring(className.indexOf(".Craft") + ".Craft".length());
-		}
-
-		return victimName;
-	}
-
-	private static String getClientName(GoogleAnalyticsPlugin plugin, Player player) {
-
-	    String serverVersion = plugin.getServer().getVersion();
-	    String clientVersion = serverVersion;
-	    String clientName = "Minecraft";
-
-	    // Check for other clients here...
-
-		return clientName + " " + clientVersion;
-	}
-
-	private static String getDamageName(int cause) {
-		switch (cause) {
-		case EntityDamageEvent.CAUSE_BLOCK_EXPLOSION:
-			return "Died from an explosion";
-		case EntityDamageEvent.CAUSE_CUSTOM:
-            return "Strangely died";
-		case EntityDamageEvent.CAUSE_DROWNING:
-            return "Drowned to death";
-		case EntityDamageEvent.CAUSE_ENTITY_ATTACK:
-            return "Was brutally attacked";
-		case EntityDamageEvent.CAUSE_ENTITY_EXPLOSION :
-            return "Got nerfed by a creeper";
-		case EntityDamageEvent.CAUSE_FALL:
-            return "Fell to there death";
-		case EntityDamageEvent.CAUSE_FIRE:
-            return "Was burnt to death";
-		case EntityDamageEvent.CAUSE_FIRE_TICK:
-			return "Got smoked";
-		case EntityDamageEvent.CAUSE_LAVA:
-			return "Went swimming in magma";
-		case EntityDamageEvent.CAUSE_LIGHTNING:
-			return "Was hit by a lightning";
-		case EntityDamageEvent.CAUSE_MAGIC:
-			return "Was killed by magic";
-		case EntityDamageEvent.CAUSE_CONTACT:
-			return "Melted away";
-		case EntityDamageEvent.CAUSE_PROJECTILE:
-			return "Was shoot";
-		case EntityDamageEvent.CAUSE_SUFFOCATION:
-			return "Suffocated";
-		case EntityDamageEvent.CAUSE_SUICIDE:
-			return "Committed suicide";
-		case EntityDamageEvent.CAUSE_VOID:
-			return "Fell into the void";
-		default:
-			return "Strangely died";
-		}
-	}
-
-
-	private static String getGamemode(int newGameMode) {
-		switch (newGameMode) {
-		case 1:
-			return "Creative";
-		case 0:
-			return "Survival";
-		case 2:
-			return "Adventure";
-		case 3:
-			return "Spectator";
-		}
-		return "Survival";
-	}
-
-	public static String getClientIP(String string) {
-		return string != null ? string.toString() : "0.0.0.0";
-	}
-
-	public static String getClientId(Player player) {
-		return player.getName();
-	}
 }

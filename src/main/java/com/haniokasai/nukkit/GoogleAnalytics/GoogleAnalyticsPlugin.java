@@ -70,14 +70,6 @@ public class GoogleAnalyticsPlugin extends PluginBase implements Listener{
 	}
 
 
-	/**
-	 * Get the tracker object for this server.
-	 * @return A tracker object.
-	 */
-	public Tracker getTracker() {
-		return tracker;
-	}
-
 	private void setDefaultConfiguration() {
 		if(!this.getConfig().exists("track_events.login")){
 			this.getConfig().set("track_events.login", true);

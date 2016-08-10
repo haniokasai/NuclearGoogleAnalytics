@@ -38,71 +38,50 @@
 package com.haniokasai.nukkit.GoogleAnalytics;
 
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 
-import cn.nukkit.plugin.Plugin;
+import cn.nukkit.Server;
 
-/**
- * Defines a Google Analytics tracker.
- *
- * @author Oliver
- *
- */
 public class Tracker {
 
-	private static Plugin plugin;
 
-
-	/**
-	 * Create a new instance of a tracker.
-	 * @param analyticsServerDomain The domain name of the google analytics account.
-	 * @param analyticsServerAccount Th account id of the google analytics account.
-	 * @param enableDebug Enable outputting tracking urls.
-	 */
-	public Tracker(Plugin plugin) {
-		Tracker.plugin = plugin;
-	}
-
-
-	/**
-	 * Track something as action an pageview.
-	 * @param clientName
-	 * @param visitorId
-	 * @param visitorIp
-	 * @param category
-	 * @param action
-	 * @param label
-	 * @throws Exception
-	 */
-	public void Track(String visitorId, String visitorIp,String category, String action, String label) throws Exception {
+	public static void Track(String visitorId, String visitorIp,String category, String action, String label){
 		Tracker.trackPageAction(visitorId,visitorIp,category, action, label);
 		Tracker.trackPageView(visitorId,visitorIp);
 	}
 
 
 
-	private static void trackPageAction(String visitorId,String visitorIp,String category, String action, String label) throws Exception {
+	private static void trackPageAction(String visitorId,String visitorIp,String category, String action, String label){
 
 		// Construct the gif hit url.
-		String utmUrl =  "https://www.google-analytics.com/collect?v="+1+
-				"&tid="+GoogleAnalyticsPlugin.analyticsServerAccount+
-				"&cid="+visitorId+
-				"&uip="+visitorIp+
-		        "&t="+"event"+
-		        "&ec="+category+
-		        "&ea="+action+
-		        "&el="+label+
-		        "&ev="+0;
+		String utmUrl;
+		try {
+			utmUrl = "https://www.google-analytics.com/collect?v="+1+
+					"&tid="+GoogleAnalyticsPlugin.analyticsServerAccount+
+					"&cid="+visitorId+
+					"&uip="+visitorIp+
+			        "&t="+"event"+
+			        "&ec="+category+
+			        "&ea="+action+
+			        "&el="+URLEncoder.encode(label, "UTF-8")+
+			        "&ev="+0;
+			if(GoogleAnalyticsPlugin.enableDebug) {
+				Server.getInstance().getLogger().info("Tracker Url: " + utmUrl);
+			}
 
-		if(GoogleAnalyticsPlugin.enableDebug) {
-			plugin.getLogger().info("Tracker Url: " + utmUrl);
+			sendRequestToGoogleAnalytics(utmUrl);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
 		}
 
-		sendRequestToGoogleAnalytics(utmUrl);
+
 	}
 
-	private static void trackPageView(String visitorId,String visitorIp) throws Exception {
+	private static void trackPageView(String visitorId,String visitorIp){
 		String page ="/";
 		String title ="MCPE";
 		// Construct the gif hit url.
@@ -116,13 +95,13 @@ public class Tracker {
 				        "&dt="+title;
 
 				if(GoogleAnalyticsPlugin.enableDebug) {
-					plugin.getLogger().info("Tracker Url: " + utmUrl);
+					Server.getInstance().getLogger().info("Tracker Url: " + utmUrl);
 				}
 
 				sendRequestToGoogleAnalytics(utmUrl);
 	}
 
-	private static void sendRequestToGoogleAnalytics(String utmUrl) throws Exception {
+	private static void sendRequestToGoogleAnalytics(String utmUrl){
 		try {
 			URL url = new URL(utmUrl);
 			URLConnection connection = url.openConnection();
@@ -139,7 +118,7 @@ public class Tracker {
 
 			in.close();
 	  	} catch (Exception e) {
-	  		plugin.getLogger().warning("Tracker Connection Error: " + e.getMessage());
+	  		Server.getInstance().getLogger().warning("Tracker Connection Error: " + e.getMessage());
 	  	}
 	}
 

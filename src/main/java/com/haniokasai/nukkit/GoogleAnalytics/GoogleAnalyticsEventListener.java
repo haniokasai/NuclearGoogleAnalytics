@@ -72,16 +72,16 @@ public class GoogleAnalyticsEventListener implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerLogin(PlayerLoginEvent event){
 		if(enableEventTryLogin) {
-			try {
+			//try {
 				Player player = event.getPlayer();
 
 				if(!player.hasPermission("googleanalyticsplugin.ignore")) {
-					plugin.getTracker().Track(player.getName(),player.getAddress(), player.getName(), "Action","Login");
+					Tracker.Track(player.getName(),player.getAddress(), player.getName(), "Action","Login");
 				}
-			}
-			catch(Exception e) {
-		  		plugin.getLogger().warning("Event Listener Error: " + e.getMessage());
-			}
+			//}
+			//catch(Exception e) {
+		  	//	plugin.getLogger().warning("Event Listener Error: " + e.getMessage());
+			//}
 		}
 	}
 
@@ -94,7 +94,7 @@ public class GoogleAnalyticsEventListener implements Listener {
 				if(!player.hasPermission("googleanalyticsplugin.ignore")) {
 					playerJoinedTime.put(player.getName(), System.currentTimeMillis());
 
-					plugin.getTracker().Track(player.getName(),player.getAddress(), player.getName(), "Login", player.isOp() ? "Operator" : "Player");
+					Tracker.Track(player.getName(),player.getAddress(), player.getName(), "Login", player.isOp() ? "Operator" : "Player");
 				}
 		}catch(Exception e) {
 				plugin.getLogger().warning("Event Listener Error: " + e.getMessage());
@@ -138,8 +138,8 @@ public class GoogleAnalyticsEventListener implements Listener {
 						}
 					}
 
-					plugin.getTracker().Track(player.getName(),player.getAddress(), player.getName(),  "Quit", playTime);
-					plugin.getTracker().Track(player.getName(),player.getAddress(), player.getName(), "Action","Quit");
+					Tracker.Track(player.getName(),player.getAddress(), player.getName(),  "Quit", playTime);
+					Tracker.Track(player.getName(),player.getAddress(), player.getName(), "Action","Quit");
 				}
 			}
 			catch(Exception e) {
@@ -156,7 +156,7 @@ public class GoogleAnalyticsEventListener implements Listener {
 				Player player = event.getPlayer();
 
 				if(!player.hasPermission("googleanalyticsplugin.ignore")) {
-					plugin.getTracker().Track(player.getName(),player.getAddress(), player.getName(), "Action","Respawn");
+					Tracker.Track(player.getName(),player.getAddress(), player.getName(), "Action","Respawn");
 				}
 			}
 			catch(Exception e) {
@@ -172,7 +172,7 @@ public class GoogleAnalyticsEventListener implements Listener {
 				Player player = event.getPlayer();
 
 				if(!player.hasPermission("googleanalyticsplugin.ignore")) {
-					plugin.getTracker().Track(player.getName(),player.getAddress(), player.getName(), "Action","Kicked");
+					Tracker.Track(player.getName(),player.getAddress(), player.getName(), "Action","Kicked");
 				}
 			}
 			catch(Exception e) {
@@ -191,7 +191,7 @@ public class GoogleAnalyticsEventListener implements Listener {
 				player = (Player)entity;
 
 				if(!player.hasPermission("googleanalyticsplugin.ignore")) {
-					plugin.getTracker().Track(player.getName(),player.getAddress(), player.getName(), "Action","Died");
+					Tracker.Track(player.getName(),player.getAddress(), player.getName(), "Action","Died");
 				}
 			}
 			catch(Exception e) {
@@ -205,7 +205,7 @@ public class GoogleAnalyticsEventListener implements Listener {
 			if(killer instanceof Player){
 
 				if(player != null && !player.hasPermission("googleanalyticsplugin.ignore") && enableEventKill) {
-					plugin.getTracker().Track(player.getName(),player.getAddress(), player.getName(), "Action", "Kill");
+					Tracker.Track(player.getName(),player.getAddress(), player.getName(), "Action", "Kill");
 				}
 			}
 
@@ -221,7 +221,7 @@ public class GoogleAnalyticsEventListener implements Listener {
 				Player player = (Player) event.getPlayer();
 
 				if(!player.hasPermission("googleanalyticsplugin.ignore")) {
-					plugin.getTracker().Track(player.getName(),player.getAddress(), player.getName(), "Action", "ChangeGameMode");
+					Tracker.Track(player.getName(),player.getAddress(), player.getName(), "Action", "ChangeGameMode");
 				}
 			}
 			catch(Exception e) {

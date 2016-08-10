@@ -1,6 +1,6 @@
-name: GoogleAnalytics
+name: NuclearGoogleAnalytics
 main:  com.haniokasai.nukkit.GoogleAnalytics.GoogleAnalyticsPlugin
-version: 0.0.1
+version: 1.0.0
 author: haniokasai
 api: ["1.0.0"]
 description: GoogleAnalytics for nukkit
